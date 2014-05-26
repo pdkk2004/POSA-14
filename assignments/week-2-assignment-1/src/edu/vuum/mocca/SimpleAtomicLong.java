@@ -59,17 +59,9 @@ class SimpleAtomicLong
      */
     public long decrementAndGet()
     {
-        long value = 0;
-
         // TODO -- you fill in here
-        mRWLock.writeLock().lock();
-        try {
-        	value = --mValue;
-        	return value;
-        }
-        finally {
-        	mRWLock.writeLock().unlock();
-        }
+    	decrement();
+    	return mValue;
     }
 
     /**
@@ -79,15 +71,10 @@ class SimpleAtomicLong
      */
     public long getAndIncrement()
     {
-        long value = 0;
-        mRWLock.writeLock().lock();
-        try {
-        	value = mValue++;
-        	return value;
-        }
-        finally {
-        	mRWLock.writeLock().unlock();
-        }
+        // TODO -- you fill in here
+        long value = mValue;
+        increment();
+        return value;
     }
 
     /**
@@ -97,17 +84,10 @@ class SimpleAtomicLong
      */
     public long getAndDecrement()
     {
-        long value = 0;
-
         // TODO -- you fill in here
-        mRWLock.writeLock().lock();
-        try {
-        	value = mValue--;
-        	return value;
-        }
-        finally {
-        	mRWLock.writeLock().unlock();
-        }
+        long value = mValue;
+        decrement();
+        return value;
     }
 
     /**
@@ -117,17 +97,29 @@ class SimpleAtomicLong
      */
     public long incrementAndGet()
     {
-        long value = 0;
-
         // TODO -- you fill in here
-        mRWLock.writeLock().lock();
-        try {
-        	value = ++mValue;
-        	return value;
-        }
-        finally {
-        	mRWLock.writeLock().unlock();
-        }
+        increment();
+        return mValue;
+    }
+    
+    private void increment() {
+    	mRWLock.writeLock().lock();
+    	try {
+    		mValue++;
+    	}
+    	finally {
+    		mRWLock.writeLock().unlock();
+    	}
+    }
+    
+    private void decrement() {
+    	mRWLock.writeLock().lock();
+    	try {
+    		mValue--;
+    	}
+    	finally {
+    		mRWLock.writeLock().unlock();
+    	}
     }
 }
 
